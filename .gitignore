@@ -22,3 +22,4 @@ bin
 .settings/*
 .settings
 *.iml
+*database.php
