@@ -285,9 +285,9 @@
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
-                        <div class="pull-left image">
+                     <!--    <div class="pull-left image">
                             <img src="img/avatar3.png" class="img-circle" alt="User Image" />
-                        </div>
+                        </div> -->
                         <div class="pull-left info">
                             <p>Hello, Jane</p>
 
@@ -312,7 +312,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="pages/widgets.html">
+                            <a href="listservers">
                                 <i class="fa fa-th"></i> <span>Widgets</span> <small class="badge pull-right bg-green">new</small>
                             </a>
                         </li>
