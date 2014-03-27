@@ -37,6 +37,10 @@
 | in the URL cannot be matched to a valid route.
 |
 */
+$route['login'] = 'auth/login';
+$route['register'] = 'auth/register';
+$route['doLogin'] = 'auth/doLogin';
+$route['doRegister'] = 'auth/doRegister';
 
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
