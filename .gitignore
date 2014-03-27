@@ -23,4 +23,5 @@ bin
 .settings
 *.iml
 *database.php
-.htaccess
+*.htaccess
+*config.php
