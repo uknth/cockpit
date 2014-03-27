@@ -1,20 +1,31 @@
 package main
 
 import (
-	"github.com/dlintw/goconf"
-	"os"
-	"log"
-	"io"
-	"path/filepath"
-	"github.com/gorilla/mux"
 	"HTTPHandler"
+	"github.com/dlintw/goconf"
+	"github.com/gorilla/mux"
+	"io"
+	"log"
+	"memcached"
 	"net/http"
-
+	"os"
+	"path/filepath"
+	"time"
+	"encoding/json"
+	"io/ioutil"
 )
+
+type Server struct{
+	Name string
+	IP string
+}
+
 
 var _cfile *goconf.ConfigFile  // A file-handler required to hold the config file
 var _confMap map[string]string // A map to hold the config file params, we don't read the file again and again
-var _store  map[string]interface{}
+var _store map[string]interface{}  // Store info about the server
+var _servers []Server
+
 
 
 func main() {
@@ -59,34 +70,93 @@ func main() {
 	} else {
 		log.Fatal("Error loading conf file ...")
 	}
+
+	// Initialize memecached
+	memcached.Init()
+
 	/* -------------------------------------  */
 	/*			Coding Begins				  */
 	/* -------------------------------------  */
 	//Variable stores everything
+	_store = make(map[string]interface{})
+	httpChannel := make(chan map[string]interface{})// {action : {object}}
+	pollCounter := 300
+	poller := time.NewTicker(time.Duration(int64(pollCounter) * int64(time.Second))) // Actual time variable that is a counter
 
-	_store  = make (map[string]interface{})
-	ch := make (chan map[string]interface{}) // {action : {object}}
+
 	// Initiate HTTP Listener
-	go func(store map[string]interface {}, ch chan map[string]interface{}){
+	// Listener for the incoming HTTP request
+	go func(store map[string]interface{}, ch chan map[string]interface{}) {
 		// Define the http listener
-		router := mux.NewRouter() // TODO add this in conf
+		router := mux.NewRouter()
 		// ROUTERS
-		router.HandleFunc("/auth", func(w http.ResponseWriter,r *http.Request){
-				HTTPHandler.Auth(w,r)
+		router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+				w.Write([]byte("{\"status\":\"alive\"}"))
 			})
-		router.HandleFunc("/add/{action}/",func(w http.ResponseWriter,r *http.Request){
-				HTTPHandler.Add(w,r,ch)
-			} )
+		router.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
+			HTTPHandler.Auth(w, r)
+		})
+		router.HandleFunc("/add/{action}", func(w http.ResponseWriter, r *http.Request) {
+			HTTPHandler.Add(w, r, ch)
+		})
 		http.Handle("/", router)
 		http.ListenAndServe(":63000", nil) // TODO add this to conf
-	}(_store,ch)
+	}(_store, httpChannel)
+
+
+
+
 	for {
 		select {
-		case item := <- ch:
+		case item := <-httpChannel:
 			// Poll on Request
-			log.Print(item)
-//		case <-ticker.C:
+			for k , _ := range item{
+				if k == "server"{
+					// Do soemthing
+					// Add this info to server map
+					ser := Server{item[k].(map[string]interface {})["name"].(string),
+						item[k].(map[string]interface {})["ip"].(string)}
+					flag := false;
+					for k,_ := range _servers {
+						if _servers[k].Name == ser.Name{
+							flag = true
+						}
+					}
+					if !flag{
+						_servers = append(_servers,ser)
+					}
+
+					log.Print(_servers)
+				}
+			}
+		case <-poller.C:
 			// Poller
+			// Now loop over servers to check the status of the server
+			for _ , val := range _servers {
+				// Make a get request to each of these and add that info to the _store
+				resp , err := http.Get(val.IP)
+				if err != nil{
+					log.Print("Error in fetching value for the IP " + val.IP)
+					resp = nil
+				}
+				if resp != nil {
+					var f interface {}
+					v, er := ioutil.ReadAll(resp.Body)
+					if er != nil{
+						log.Print("Error reading value from the server")
+					}else{
+						er := json.Unmarshal([]byte(v) , &f)
+						if er != nil{
+							log.Print("Error in Unmarshaling data")
+							var temp interface {}
+							_store[val.Name] = temp
+						}else{
+							_store[val.Name] = f
+						}
+					}
+				}
+			}
+
 		}
 	}
 }

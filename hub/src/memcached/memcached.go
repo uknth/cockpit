@@ -14,6 +14,10 @@ func Init(){
 
 func Get(key string) (string ,error){
 	val, err := mc.Get(key)
+	if err != nil{
+		log.Panic("Error getting value from memcached")
+	}
+	return string(val.Value),nil
 }
 
 
