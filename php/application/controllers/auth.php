@@ -3,6 +3,7 @@
 class Auth extends CI_Controller {
 	public function login(){
 		//echo '<pre>'; print_r(apache_get_modules());echo '</pre>';exit;
+
 		$this->load->view('auth/login');
 	}
 
