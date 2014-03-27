@@ -100,8 +100,8 @@ class Auth extends CI_Controller {
 		$this->load->model('User_db','u');
 
 		//lets get user details from db
-		$data = $this->u->getUserDetails($post['email']);
-
+		//$data = $this->u->getUserDetails($post['email']);
+		$data = (object) array("user_id"=>3,"password"=>"anilanl");
 		if(!is_object($data)){
 			echo json_encode(array(
 				'status' => 'error'
