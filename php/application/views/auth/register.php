@@ -5,11 +5,11 @@
         <title>AdminLTE | Registration Page</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- bootstrap 3.0.2 -->
-        <link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- font Awesome -->
-        <link href="../../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
-        <link href="../../css/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
 
         <!-- jQuery 2.0.2 -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -27,7 +27,7 @@
         // Specify the validation rules
         rules: {
             name: "required",
-            userid: {
+            email: {
                 required: true,
                 email: true
             },
@@ -37,7 +37,7 @@
             },
             password2: {
                 required: true,
-                minlength: 5,
+                minlength: 5
                 //equalTo: "#password"
             }
         },
@@ -47,14 +47,14 @@
             name: "Please enter your first name",
             password: {
                 required: "Please provide a password",
-                minlength: "Your password must be at least 5 characters long",
+                minlength: "Your password must be at least 5 characters long"
             },
-            userid: "Please enter a valid email address"
-        },
+            email: "Please enter a valid email address"
+         }//,
         
-        submitHandler: function(form) {
-            form.submit();
-        }
+        // submitHandler: function(form) {
+        //     //form.submit();
+        // }
     });
 
   });
@@ -72,13 +72,13 @@
 
         <div class="form-box" id="login-box">
             <div class="header">Register New Membership</div>
-            <form action="" method="post" id="register-form" novalidate="novalidate">
+            <form action="doRegister" method="post" id="register-form" novalidate="novalidate">
                 <div class="body bg-gray">
                     <div class="form-group">
                         <input type="text" name="name" id="name" class="form-control" placeholder="Full name"/>
                     </div>
                     <div class="form-group">
-                        <input type="text" name="userid" id="userid" class="form-control" placeholder="Email ID"/>
+                        <input type="text" name="email" id="userid" class="form-control" placeholder="Email ID"/>
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" id="password" class="form-control" placeholder="Password"/>
@@ -91,7 +91,7 @@
 
                     <button type="submit" class="btn bg-olive btn-block">Sign me up</button>
 
-                    <a href="../../" class="text-center">I already have a membership</a>
+                    <a href="login" class="text-center">I already have a membership</a>
                 </div>
             </form>
 
@@ -108,7 +108,7 @@
 
 
         <!-- Bootstrap -->
-        <script src="../../js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
 
     </body>
 </html>
