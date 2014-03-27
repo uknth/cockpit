@@ -4,18 +4,21 @@ class Auth extends CI_Controller {
 
 	function index(){
 		redirectIfNoSession($this);
-		$this->load->view('auth/login');
+		$this->layout->setLayout('layouts/auth');
+		$this->layout->view('home/homepage');
 	}
 
 	public function login(){
 		//echo '<pre>'; print_r(apache_get_modules());echo '</pre>';exit;
 		redirectIfSession($this);
-		$this->load->view('auth/login');
+		$this->layout->setLayout('layouts/auth');
+		$this->layout->view('auth/login');
 	}
 
 	public function register(){
 		redirectIfSession($this);
-		$this->load->view('auth/register');
+		$this->layout->setLayout('layouts/auth');
+		$this->layout->view('auth/register');
 	}
 
 	public function doRegister(){
