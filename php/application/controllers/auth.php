@@ -4,8 +4,10 @@ class Auth extends CI_Controller {
 
 	function index(){
 		redirectIfNoSession($this);
-		$this->layout->setLayout('layouts/auth');
-		$this->layout->view('home/homepage');
+		$this->layout->setLayout('layouts/main');
+		$this->layout->view('home/homepage',array(
+			'js_file' => 'AdminLTE/dashboard'
+		));
 	}
 
 	public function login(){

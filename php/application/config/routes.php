@@ -43,6 +43,10 @@ $route['doLogin'] = 'auth/doLogin';
 $route['doRegister'] = 'auth/doRegister';
 $route['logout'] = 'auth/logout';
 
+$route['listservers'] = 'servers/listservers';
+$route['addserver'] = 'servers/addserver';
+$route['doaddserver'] = 'servers/doaddserver';
+
 $route['default_controller'] = "auth";
 $route['404_override'] = '';
 
