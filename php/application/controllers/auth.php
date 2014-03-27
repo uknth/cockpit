@@ -1,18 +1,26 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Auth extends CI_Controller {
+
+	function index(){
+		redirectIfNoSession($this);
+		$this->load->view('auth/login');
+	}
+
 	public function login(){
 		//echo '<pre>'; print_r(apache_get_modules());echo '</pre>';exit;
-
+		redirectIfSession($this);
 		$this->load->view('auth/login');
 	}
 
 	public function register(){
+		redirectIfSession($this);
 		$this->load->view('auth/register');
 	}
 
-	public function doRegister()
-	{
+	public function doRegister(){
+		redirectIfSession($this);
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('password', 'Password', 'required');
@@ -53,7 +61,7 @@ class Auth extends CI_Controller {
 		));
 
 		//LETS REGISTER IN GO SERVER
-		$status = post_to_go('add','user',array(),array('USER_ID' => $user_id, 'TOKEN' => $random_string));
+		$status = post_to_go('auth','',array('USER_ID' => $user_id, 'TOKEN' => $random_string),array('USER_ID : '.$user_id, 'TOKEN : '.$random_string));
 
 		echo json_encode(array(
 			'status' => 'success'
@@ -65,6 +73,8 @@ class Auth extends CI_Controller {
 	}
 
 	function doLogin(){
+		redirectIfSession($this);
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('password', 'Password', 'required');
@@ -113,14 +123,24 @@ class Auth extends CI_Controller {
 		));
 
 		//LETS REGISTER IN GO SERVER
-		$status = post_to_go('add','user',array(),array('USER_ID' => $user_id, 'TOKEN' => $random_string));
+		$status = post_to_go('auth','',array('USER_ID' => $data->user_id, 'TOKEN' => $random_string),array('USER_ID: '.$data->user_id, 'TOKEN: '.$random_string));
 
 		echo json_encode(array(
 			'status' => 'success'
 			,'message' => 'You are successfully logged-in.'
 			,'user_id' => $user_id
 			,'token' => $random_string
+			,'result' => $status
 		));
 		exit;
+	}
+
+	function logout(){
+		$this->session->destroy();
+		redirect(base_url());
+	}
+
+	function test(){
+		//post_to_go('add','user',array(),array('USER_ID' => $user_id, 'TOKEN' => $random_string));
 	}
 }

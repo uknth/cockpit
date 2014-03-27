@@ -18,7 +18,22 @@ function post_to_go($type, $action, $data, $headers) {
 
    $result = curl_exec($post);
 
+   $header = curl_getinfo ( $post );
+
+   //echo '<pre>'; print_r($header);echo '</pre>';
+
    curl_close($post);
 
    return $result;
+}
+
+function redirectIfSession($parent){
+   if($parent->session->userdata('user_id') > 0)
+      redirect(base_url());
+}
+
+function redirectIfNoSession($parent){
+   //echo intval($parent->session->userdata('user_id')); exit;
+   if(!intval($parent->session->userdata('user_id')))
+      redirect(base_url().'login');
 }

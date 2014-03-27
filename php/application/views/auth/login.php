@@ -22,10 +22,10 @@
 
         <div class="form-box" id="login-box">
             <div class="header">Sign In</div>
-            <form action="home" method="post">
+            <form action="doLogin" method="post">
                 <div class="body bg-gray">
                     <div class="form-group">
-                        <input type="text" name="userid" class="form-control" placeholder="User ID"/>
+                        <input type="text" name="email" class="form-control" placeholder="User ID"/>
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" class="form-control" placeholder="Password"/>

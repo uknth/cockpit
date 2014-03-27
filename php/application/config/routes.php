@@ -41,8 +41,9 @@ $route['login'] = 'auth/login';
 $route['register'] = 'auth/register';
 $route['doLogin'] = 'auth/doLogin';
 $route['doRegister'] = 'auth/doRegister';
+$route['logout'] = 'auth/logout';
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "auth";
 $route['404_override'] = '';
 
 
