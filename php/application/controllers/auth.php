@@ -62,11 +62,10 @@ class Auth extends CI_Controller {
 		$this->session->set_userdata(array(
 			'user_id' => $user_id
 			,'email' => $post['email']
-			,'token' => $random_string
 		));
 
 		//LETS REGISTER IN GO SERVER
-		$status = post_to_go('auth','',array('USER_ID' => $user_id, 'TOKEN' => $random_string),array('USER_ID : '.$user_id, 'TOKEN : '.$random_string));
+		$status = post_to_go('auth','',array('USER_ID' => $user_id, 'TOKEN' => $random_string),array('USER_ID : '.$user_id, 'TOKEN : '.$post['email']));
 
 		echo json_encode(array(
 			'status' => 'success'
@@ -128,7 +127,7 @@ class Auth extends CI_Controller {
 		));
 
 		//LETS REGISTER IN GO SERVER
-		$status = post_to_go('auth','',array('USER_ID' => $data->user_id, 'TOKEN' => $random_string),array('USER_ID: '.$data->user_id, 'TOKEN: '.$random_string));
+		$status = post_to_go('auth','',array('USER_ID' => $data->user_id, 'TOKEN' => $post['email']),array('USER_ID: '.$data->user_id, 'TOKEN: '.$post['email']));
 
 		echo json_encode(array(
 			'status' => 'success'

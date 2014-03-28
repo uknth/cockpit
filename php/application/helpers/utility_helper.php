@@ -10,7 +10,7 @@ function post_to_go($type, $action, $data, $headers) {
 
    $post = curl_init();
 
-   curl_setopt($post, CURLOPT_URL, GO_PATH.$type.'/'.$action );
+   curl_setopt($post, CURLOPT_URL, trim(GO_PATH.$type.'/'.$action,'/') );
    curl_setopt($post, CURLOPT_POST, count($data));
    curl_setopt($post, CURLOPT_POSTFIELDS, $fields);
    curl_setopt($post, CURLOPT_RETURNTRANSFER, 1);
@@ -20,7 +20,7 @@ function post_to_go($type, $action, $data, $headers) {
 
    $header = curl_getinfo ( $post );
 
-   //echo '<pre>'; print_r($header);echo '</pre>';
+   echo '<pre>'; print_r($header);echo '</pre>';
 
    curl_close($post);
 
